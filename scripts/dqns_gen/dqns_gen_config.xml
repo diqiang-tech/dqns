@@ -1,0 +1,376 @@
+<?xml version="1.0"?>
+<dqns_gen_config>    
+	<kernel name="kernel module">
+		<!-- root[0][0] -->
+		<kernel_msg name="msg">
+			<!--RING_QUEUE_SIZE define="KER_MSG_RING_QUEUE_SIZE">6</RING_QUEUE_SIZE-->
+			<RING_QUEUE_SIZE SIZE="3">KER_MSG_RING_QUEUE_SIZE</RING_QUEUE_SIZE>
+			<USER_MSG ID="post" >post msg</USER_MSG>	
+			<USER_MSG ID="abnormal" >alarm msg</USER_MSG>	
+		</kernel_msg>
+		
+		<!-- root[0][1] -->
+		<!-- define user timer id here] -->
+		<kernel_timer name="timer">		
+			<USER_TIMER ID="return">dig display return to pressure from level</USER_TIMER>
+			<USER_TIMER ID="run_stop">用于智能模式下的走走停停</USER_TIMER>
+			<USER_TIMER ID="dig_fresh">数码管刷新timer</USER_TIMER>
+			<USER_TIMER ID="working_led">timer for led flash in working state</USER_TIMER>
+		</kernel_timer>
+		
+		<!-- root[0][2] -->
+		<kernel_key name="key">	
+			
+			<!--[0]-->
+			<key_types>
+				<KEY_BITS_TYPE type="T_U8">T_KER_KEY_BITS</KEY_BITS_TYPE>
+			</key_types>
+			
+			<!--[1]-->
+			<key_id_list name="key id list">
+				<USER_KEY ID="run_stop" >启停按键</USER_KEY>
+				<USER_KEY ID="level" >档位按键</USER_KEY>
+				<USER_KEY ID="smart" >智能按键</USER_KEY>
+				<USER_KEY ID="eq" >electronic quality电量按键</USER_KEY>
+				<!--USER_KEY ID="pca" >pca key</USER_KEY-->
+			</key_id_list>
+			
+			<!--[2]-->
+			<key_configuration name="key module configuration">		
+							
+				<run_stop>
+					<COMBINE_WITH BITS=""></COMBINE_WITH>
+					<NEED_CARE_LP1 VALUE="0"></NEED_CARE_LP1>
+					<NEED_CARE_LP2 VALUE="0"></NEED_CARE_LP2>
+					<NEED_CARE_LP3 VALUE="0"></NEED_CARE_LP3>
+					<NEED_CARE_STUCK VALUE="0"></NEED_CARE_STUCK>					
+				</run_stop>
+				
+				<level>
+					<COMBINE_WITH BITS=""></COMBINE_WITH>
+					<NEED_CARE_LP1 VALUE="0"></NEED_CARE_LP1>
+					<NEED_CARE_LP2 VALUE="0"></NEED_CARE_LP2>
+					<NEED_CARE_LP3 VALUE="0"></NEED_CARE_LP3>
+					<NEED_CARE_STUCK VALUE="0"></NEED_CARE_STUCK>					
+				</level>
+				
+				<smart>
+					<COMBINE_WITH BITS=""></COMBINE_WITH>
+					<NEED_CARE_LP1 VALUE="0"></NEED_CARE_LP1>
+					<NEED_CARE_LP2 VALUE="0"></NEED_CARE_LP2>
+					<NEED_CARE_LP3 VALUE="0"></NEED_CARE_LP3>
+					<NEED_CARE_STUCK VALUE="0"></NEED_CARE_STUCK>					
+				</smart>
+				
+				<eq>
+					<COMBINE_WITH BITS=""></COMBINE_WITH>
+					<NEED_CARE_LP1 VALUE="0"></NEED_CARE_LP1>
+					<NEED_CARE_LP2 VALUE="0"></NEED_CARE_LP2>
+					<NEED_CARE_LP3 VALUE="0"></NEED_CARE_LP3>
+					<NEED_CARE_STUCK VALUE="0"></NEED_CARE_STUCK>					
+				</eq>
+				
+				
+				
+			</key_configuration>
+			
+			<!--[3]-->
+			<combine_key_id_list name="combine key id list">
+				<!--COMBINE_KEY ID="psw_run">psw_shutdown+run_stop</COMBINE_KEY-->	
+				<!--COMBINE_KEY ID="add_minus">add+minus</COMBINE_KEY-->
+				<COMBINE_KEY ID="dummy">level+smart</COMBINE_KEY>				
+			</combine_key_id_list>
+			
+			<!--[4]-->
+			<key_define name="definition for every key">
+			</key_define>
+		</kernel_key>
+		
+		<!-- root[0][3] -->
+		<kernel_io name="io">
+		</kernel_io>
+		
+		<!-- root[0][4] -->
+		<kernel_fsm name="fsm">
+		
+			<!-- 这里定义状态id，用小写 -->				
+			<state_id ID="demo">
+				
+				<!-- 定时器,回调函数配置 AppStateDemoLedFlashTimerHandle-->
+				<timer_bind_tbl name="timer bind table">
+					<TIMER_BIND ID="working_led">LedFlash</TIMER_BIND>
+				</timer_bind_tbl>
+				
+				<!-- 按键按下,回调函数配置 AppStateDemoKeyRunStopPressHandle-->
+				<key_press_tbl name="key press handle table">
+					<KEY_PRESS_BIND ID="run_stop">RunStop</KEY_PRESS_BIND>
+				</key_press_tbl>
+				
+				<!-- long press 1,回调函数配置 AppStateDemoRunStopLp1Handle-->
+				<key_lp1_tbl name="long press 1 handle table">
+					<!--KEY_LP1_BIND ID="run_stop">RunStop</KEY_LP1_BIND-->
+				</key_lp1_tbl>
+				
+				<!-- long press 2,回调函数配置 AppStateDemoRunStopLp2Handle-->
+				<key_lp2_tbl name="long press 2 handle table">
+					<KEY_LP2_BIND ID="run_stop">RunStop</KEY_LP2_BIND>
+				</key_lp2_tbl>
+				
+				<!-- long press 3,回调函数配置 AppStateDemoRunStopLp3Handle-->
+				<key_lp3_tbl name="long press 3 handle table">
+					<KEY_LP3_BIND ID="run_stop">RunStop</KEY_LP3_BIND>
+				</key_lp3_tbl>
+				
+				<!-- 按键释放,回调函数配置 AppStateDemoKeyRunStopReleaseHandle-->
+				<key_release_tbl name="key release handle table">
+					<KEY_RELEASE_BIND ID="run_stop">RunStop</KEY_RELEASE_BIND>
+				</key_release_tbl>
+				
+				<!-- 组合键,回调函数配置 AppStateDemoKeyCombineRunConfirmHandle-->
+				<key_combine_tbl name="combine  key handle table">
+					<!--KEY_COMBINE_BIND ID="run_confirm">RunConfirm</KEY_COMBINE_BIND-->
+				</key_combine_tbl>	
+
+				<!-- 用户消息，回调函数配置 AppStateDemoUserTestMsgHandle-->
+				<user_msg_tbl name="user msg handle table">
+					<USER_MSG_BIND ID="user_test">UserTest</USER_MSG_BIND>
+				</user_msg_tbl>	
+				
+			</state_id>	
+			
+			<state_id ID="x">
+			
+				<!-- 用户消息，回调函数配置 AppStateDemoUserTestMsgHandle-->
+				<user_msg_tbl name="user msg handle table">
+					<USER_MSG_BIND ID="post">Post</USER_MSG_BIND>
+				</user_msg_tbl>	
+				
+			</state_id>	
+			
+			<state_id ID="idle">
+				
+				<!-- 定时器,回调函数配置 AppStateDemoLedFlashTimerHandle-->
+				<timer_bind_tbl name="timer bind table">
+					<TIMER_BIND ID="return">Return</TIMER_BIND>
+				</timer_bind_tbl>
+				
+				<!-- 按键按下,回调函数配置 AppStateDemoKeyRunStopPressHandle-->
+				<key_press_tbl name="key press handle table">
+					<KEY_PRESS_BIND ID="run_stop">RunStop</KEY_PRESS_BIND>
+					<KEY_PRESS_BIND ID="level">Level</KEY_PRESS_BIND>
+					<KEY_PRESS_BIND ID="smart">Smart</KEY_PRESS_BIND>
+					<KEY_PRESS_BIND ID="eq">EQ</KEY_PRESS_BIND>
+				</key_press_tbl>
+				
+				<!-- long press 1,回调函数配置 AppStateDemoRunStopLp1Handle-->
+				<key_lp1_tbl name="long press 1 handle table">
+					<!--KEY_LP1_BIND ID="run_stop">RunStop</KEY_LP1_BIND-->
+				</key_lp1_tbl>
+				
+				<!-- long press 2,回调函数配置 AppStateDemoRunStopLp2Handle-->
+				<key_lp2_tbl name="long press 2 handle table">
+					<!--KEY_LP2_BIND ID="run_stop">RunStop</KEY_LP2_BIND-->
+				</key_lp2_tbl>
+				
+				<!-- long press 3,回调函数配置 AppStateDemoRunStopLp3Handle-->
+				<key_lp3_tbl name="long press 3 handle table">
+					<!--KEY_LP3_BIND ID="run_stop">RunStop</KEY_LP3_BIND-->
+				</key_lp3_tbl>
+				
+				<!-- 按键释放,回调函数配置 AppStateDemoKeyRunStopReleaseHandle-->
+				<key_release_tbl name="key release handle table">
+					<KEY_RELEASE_BIND ID="eq">EQ</KEY_RELEASE_BIND>
+				</key_release_tbl>
+				
+				<!-- 组合键,回调函数配置 AppStateDemoKeyCombineRunConfirmHandle-->
+				<key_combine_tbl name="combine  key handle table">
+					<!--KEY_COMBINE_BIND ID="run_confirm">RunConfirm</KEY_COMBINE_BIND-->
+				</key_combine_tbl>	
+
+				<!-- 用户消息，回调函数配置 AppStateDemoUserTestMsgHandle-->
+				<user_msg_tbl name="user msg handle table">
+					<USER_MSG_BIND ID="abnormal">Abnormal</USER_MSG_BIND>
+				</user_msg_tbl>	
+				
+			</state_id>	
+			
+					
+			
+			<state_id ID="run">
+				
+				<!-- 定时器,回调函数配置 AppStateDemoLedFlashTimerHandle-->
+				<timer_bind_tbl name="timer bind table">
+					<TIMER_BIND ID="return">level显示超时返回到pressure显示</TIMER_BIND>
+				</timer_bind_tbl>
+				
+				<!-- 按键按下,回调函数配置 AppStateDemoKeyRunStopPressHandle-->
+				<key_press_tbl name="key press handle table">
+					<KEY_PRESS_BIND ID="run_stop">RunStop</KEY_PRESS_BIND>
+					<KEY_PRESS_BIND ID="level">Level</KEY_PRESS_BIND>
+					<KEY_PRESS_BIND ID="smart">Smart</KEY_PRESS_BIND>
+					<KEY_PRESS_BIND ID="eq">按下电量按键</KEY_PRESS_BIND>
+				</key_press_tbl>
+				
+				<!-- long press 1,回调函数配置 AppStateDemoRunStopLp1Handle-->
+				<key_lp1_tbl name="long press 1 handle table">
+					<!--KEY_LP1_BIND ID="run_stop">RunStop</KEY_LP1_BIND-->
+				</key_lp1_tbl>
+				
+				<!-- long press 2,回调函数配置 AppStateDemoRunStopLp2Handle-->
+				<key_lp2_tbl name="long press 2 handle table">
+					<!--KEY_LP2_BIND ID="run_stop">RunStop</KEY_LP2_BIND-->
+				</key_lp2_tbl>
+				
+				<!-- long press 3,回调函数配置 AppStateDemoRunStopLp3Handle-->
+				<key_lp3_tbl name="long press 3 handle table">
+					<!--KEY_LP3_BIND ID="run_stop">RunStop</KEY_LP3_BIND-->
+				</key_lp3_tbl>
+				
+				<!-- 按键释放,回调函数配置 AppStateDemoKeyRunStopReleaseHandle-->
+				<key_release_tbl name="key release handle table">
+					<KEY_RELEASE_BIND ID="eq">释放电量按键</KEY_RELEASE_BIND>
+				</key_release_tbl>
+				
+				<!-- 组合键,回调函数配置 AppStateDemoKeyCombineRunConfirmHandle-->
+				<key_combine_tbl name="combine  key handle table">
+					<!--KEY_COMBINE_BIND ID="run_confirm">RunConfirm</KEY_COMBINE_BIND-->
+				</key_combine_tbl>	
+
+				<!-- 用户消息，回调函数配置 AppStateDemoUserTestMsgHandle-->
+				<user_msg_tbl name="user msg handle table">
+					<USER_MSG_BIND ID="abnormal">异常消息</USER_MSG_BIND>
+				</user_msg_tbl>	
+				
+			</state_id>	
+			
+			<state_id ID="abnormal">
+				
+				<!-- 定时器,回调函数配置 AppStateDemoLedFlashTimerHandle-->
+				<timer_bind_tbl name="timer bind table">
+					<!--TIMER_BIND ID="working_led">LedFlash</TIMER_BIND-->
+				</timer_bind_tbl>
+				
+				<!-- 按键按下,回调函数配置 AppStateDemoKeyRunStopPressHandle-->
+				<key_press_tbl name="key press handle table">
+					<KEY_PRESS_BIND ID="run_stop">RunStop</KEY_PRESS_BIND>
+				</key_press_tbl>
+				
+				<!-- long press 1,回调函数配置 AppStateDemoRunStopLp1Handle-->
+				<key_lp1_tbl name="long press 1 handle table">
+					<!--KEY_LP1_BIND ID="run_stop">RunStop</KEY_LP1_BIND-->
+				</key_lp1_tbl>
+				
+				<!-- long press 2,回调函数配置 AppStateDemoRunStopLp2Handle-->
+				<key_lp2_tbl name="long press 2 handle table">
+					<!--KEY_LP2_BIND ID="run_stop">RunStop</KEY_LP2_BIND-->
+				</key_lp2_tbl>
+				
+				<!-- long press 3,回调函数配置 AppStateDemoRunStopLp3Handle-->
+				<key_lp3_tbl name="long press 3 handle table">
+					<!--KEY_LP3_BIND ID="run_stop">RunStop</KEY_LP3_BIND-->
+				</key_lp3_tbl>
+				
+				<!-- 按键释放,回调函数配置 AppStateDemoKeyRunStopReleaseHandle-->
+				<key_release_tbl name="key release handle table">
+					<!--KEY_RELEASE_BIND ID="run_stop">RunStop</KEY_RELEASE_BIND-->
+				</key_release_tbl>
+				
+				<!-- 组合键,回调函数配置 AppStateDemoKeyCombineRunConfirmHandle-->
+				<key_combine_tbl name="combine  key handle table">
+					<!--KEY_COMBINE_BIND ID="run_confirm">RunConfirm</KEY_COMBINE_BIND-->
+				</key_combine_tbl>	
+
+				<!-- 用户消息，回调函数配置 AppStateDemoUserTestMsgHandle-->
+				<user_msg_tbl name="user msg handle table">
+					<!--USER_MSG_BIND ID="post">Post</USER_MSG_BIND-->
+				</user_msg_tbl>	
+				
+			</state_id>	
+			
+			<state_id ID="debug">
+				
+				<!-- 定时器,回调函数配置 AppStateDemoLedFlashTimerHandle-->
+				<timer_bind_tbl name="timer bind table">
+					<!--TIMER_BIND ID="working_led">LedFlash</TIMER_BIND-->
+				</timer_bind_tbl>
+				
+				<!-- 按键按下,回调函数配置 AppStateDemoKeyRunStopPressHandle-->
+				<key_press_tbl name="key press handle table">
+					<!--KEY_PRESS_BIND ID="run_stop">RunStop</KEY_PRESS_BIND-->
+				</key_press_tbl>
+				
+				<!-- long press 1,回调函数配置 AppStateDemoRunStopLp1Handle-->
+				<key_lp1_tbl name="long press 1 handle table">
+					<!--KEY_LP1_BIND ID="run_stop">RunStop</KEY_LP1_BIND-->
+				</key_lp1_tbl>
+				
+				<!-- long press 2,回调函数配置 AppStateDemoRunStopLp2Handle-->
+				<key_lp2_tbl name="long press 2 handle table">
+					<!--KEY_LP2_BIND ID="run_stop">RunStop</KEY_LP2_BIND-->
+				</key_lp2_tbl>
+				
+				<!-- long press 3,回调函数配置 AppStateDemoRunStopLp3Handle-->
+				<key_lp3_tbl name="long press 3 handle table">
+					<!--KEY_LP3_BIND ID="run_stop">RunStop</KEY_LP3_BIND-->
+				</key_lp3_tbl>
+				
+				<!-- 按键释放,回调函数配置 AppStateDemoKeyRunStopReleaseHandle-->
+				<key_release_tbl name="key release handle table">
+					<!--KEY_RELEASE_BIND ID="run_stop">RunStop</KEY_RELEASE_BIND-->
+				</key_release_tbl>
+				
+				<!-- 组合键,回调函数配置 AppStateDemoKeyCombineRunConfirmHandle-->
+				<key_combine_tbl name="combine  key handle table">
+					<!--KEY_COMBINE_BIND ID="run_confirm">RunConfirm</KEY_COMBINE_BIND-->
+				</key_combine_tbl>	
+
+				<!-- 用户消息，回调函数配置 AppStateDemoUserTestMsgHandle-->
+				<user_msg_tbl name="user msg handle table">
+					<!--USER_MSG_BIND ID="post">Post</USER_MSG_BIND-->
+				</user_msg_tbl>	
+				
+			</state_id>	
+			
+		</kernel_fsm>
+		
+		<!-- root[0][5] -->
+		<kernel_comm name="communication">
+			<comm_id ID="pc">
+				<SOME_DEFINES VALUE="8">RING_QUEUE_SIZE</SOME_DEFINES>
+				<SOME_DEFINES VALUE="32">PARSE_BUFFER_SIZE</SOME_DEFINES>
+				<SOME_DEFINES VALUE="10">RX_TIMEOUT_MS</SOME_DEFINES>
+				<SOME_DEFINES VALUE="200">WAIT_ACK_TIMEOUT_MS</SOME_DEFINES>
+				<SOME_DEFINES VALUE="3">WAIT_ACK_RETRY_TIMES</SOME_DEFINES>
+				<RX_CMD_ID_LIST>
+					<RX_CMD ID="not_available">NotAvailable</RX_CMD>
+					<RX_CMD ID="run_stop">RunStop</RX_CMD>
+					<RX_CMD ID="get_status">GetStatus</RX_CMD>					
+				</RX_CMD_ID_LIST>
+				<TX_CMD_ID_LIST>
+					<TX_CMD ID="not_available">NotAvailable</TX_CMD>
+					<TX_CMD ID="run_stop">RunStop</TX_CMD>
+					<TX_CMD ID="get_status">GetStatus</TX_CMD>
+				</TX_CMD_ID_LIST>
+			</comm_id>
+		</kernel_comm>
+		
+    </kernel>
+	
+	<udm name="universal driver module">
+		<!-- root[1][0] -->
+		<device_id name="device id list">
+			<DEVICE ID="key">key device</DEVICE>
+			<DEVICE ID="led">led device</DEVICE>
+			<DEVICE ID="dig">数码管</DEVICE>			
+			<DEVICE ID="pump">vacumm extractor pump</DEVICE>
+			<!--DEVICE ID="eeprom">eeprom device</DEVICE-->
+		</device_id>
+	</udm>	
+</dqns_gen_config>
+
+
+
+
+
+
+
