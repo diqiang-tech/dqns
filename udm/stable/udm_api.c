@@ -1,12 +1,10 @@
 #include "udm_api.h"
 
-void UdmInit(TE_UDM_DEVICE_ID e_device_id){
-    M_Assert(e_device_id < E_UDM_DEVICE_CNT);
-    TS_UDM_DEVICE * p_device = 0;
-    p_device = UdmDeviceObj(e_device_id);
-    M_Assert(p_device);
-    p_device->p_fn_init();
+
+void UdmInit(void){
+    UdmDeviceInit();
 }
+
 
 TE_UDM_RET_CODE UdmOpen(TE_UDM_DEVICE_ID e_device_id,T_UDM_OPEN_MODE open_mode){
     TE_UDM_RET_CODE e_ret_code = E_UDM_OK;
